@@ -6,9 +6,44 @@ body {
   background-image: url("./home-bg.jpg");
   background-size: cover;
 }
-h1 {
-  color: blue;
+.home-container {
+  margin-top: 12rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.important {
-  color: orangered;
+h1 {
+  color: white;
+  font-size: xx-large;
+  font-weight: bold;
+}
+h2 {
+  color: white;
+  font-size: x-large;
+  font-weight: 500;
+  text-align: center;
+}
+.home-card {
+  margin-top: 12px;
+  width: 60%;
+  padding-left: 6rem;
+}
+
+button {
+  outline: none;
+  width: 10rem;
+  height: 2rem;
+  border: 1px solid white;
+  padding: 3px;
+  background: tomato;
+}
+button p {
+  color: white;
+  font-size: small;
+  text-transform: capitalize;
+}
+button:hover {
+  background-color: rgb(252, 115, 91);
+  transition: all;
+  transition-duration: 500ms;
 }
