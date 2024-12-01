@@ -15,5 +15,5 @@ class DB():
 		self.mysql = MySQL(app)
 	def get_db_cursor(self):
 		conn = self.mysql.connect()
-		return self.conn, self.conn.cursor()
+		return conn, conn.cursor()
 
