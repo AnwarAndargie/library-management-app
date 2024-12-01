@@ -16,17 +16,21 @@ h1 {
   color: white;
   font-size: xx-large;
   font-weight: bold;
+  backdrop-filter: blur(25px);
+  /* background-color: rgb(240, 145, 145); */
+  /* box-shadow: 10px 5px 5px 5px rgb(210, 101, 82); */
 }
 h2 {
+  margin-top: 8px;
   color: white;
   font-size: x-large;
-  font-weight: 500;
+  font-weight: 700;
   text-align: center;
 }
 .home-card {
-  margin-top: 12px;
-  width: 60%;
-  padding-left: 6rem;
+  margin-top: 18px;
+  width: 70%;
+  padding-left: 12rem;
 }
 
 button {
@@ -36,6 +40,7 @@ button {
   border: 1px solid white;
   padding: 3px;
   background: tomato;
+  cursor: pointer;
 }
 button p {
   color: white;
