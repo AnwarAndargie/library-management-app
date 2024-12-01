@@ -11,9 +11,22 @@ class DB():
 		app.config["MYSQL_DATABASE_USER"] = self.user
 		app.config["MYSQL_DATABASE_PASSWORD"] = self.password
 		app.config["MYSQL_DATABASE_DB"] = self.db
-
 		self.mysql = MySQL(app)
-	def get_db_cursor(self):
-		conn = self.mysql.connect()
-		return conn, conn.cursor()
+	
+
+	def cur(self):
+		return self.mysql.get_db().cursor()
+
+	def query(self, q):
+		h = self.cur()
+	
+		if (len(self.table)>0):
+			q = q.replace("@table", self.table)
+
+		h.execute(q)
+
+		return h
+
+	def commit(self):
+		self.query("COMMIT;")
 
