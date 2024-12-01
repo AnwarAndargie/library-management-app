@@ -1,47 +1,79 @@
 from App.Books import Books
 
-class BookController():
-	def __init__(self, DAO):
-		self.misc = Books(DAO.db.book)
-		self.dao = self.misc.dao
+class BookController:
+    def __init__(self, DAO):
+        self.misc = Books(DAO.db.book)
+        self.dao = self.misc.dao
 
-	def list(self, availability=1,user_id=None):
-		if user_id!= None:
-			book_list = self.dao.listByUser(user_id)
-		else:
-			book_list = self.dao.list(availability)
+    def createBook(self, name, edition, year, author, count, available):
+        try:
+            book = self.dao.createBook(name, edition, year, author, count, available)
+            return book
+        except Exception as e:
+            return {"error": f"Failed to create book: {str(e)}"}
 
-		return book_list
+    def getAllBooks(self, availability=1, user_id=None):
+        try:
+            if user_id is not None:
+                book_list = self.dao.listByUser(user_id)
+            else:
+                book_list = self.dao.list(availability)
+            return book_list
+        except Exception as e:
+            return {"error": f"Failed to retrieve books: {str(e)}"}
 
-	def getReserverdBooksByUser(self, user_id):
-		books = self.dao.getReserverdBooksByUser(user_id)
+    def getReservedBooksByUser(self, user_id):
+        try:
+            books = self.dao.getReservedBooksByUser(user_id)
+            return books
+        except Exception as e:
+            return {"error": f"Failed to get reserved books: {str(e)}"}
 
-		return books
+    def getBook(self, id):
+        try:
+            book = self.dao.getBook(id)
+            return book
+        except Exception as e:
+            return {"error": f"Failed to get book: {str(e)}"}
 
-	def getBook(self, id):
-		books = self.dao.getBook(id)
+    def search(self, keyword, availability=1):
+        try:
+            books = self.dao.search_book(keyword, availability)
+            return books
+        except Exception as e:
+            return {"error": f"Search failed: {str(e)}"}
 
-		return books
+    def reserve(self, user_id, book_id):
+        try:
+            books = self.dao.reserve(user_id, book_id)
+            return books
+        except Exception as e:
+            return {"error": f"Failed to reserve book: {str(e)}"}
 
-	def search(self, keyword, availability=1):
-		books = self.dao.search_book(keyword, availability)
+    def getUserBooks(self, user_id):
+        try:
+            books = self.dao.getBooksByUser(user_id)
+            return books
+        except Exception as e:
+            return {"error": f"Failed to get user books: {str(e)}"}
 
-		return books
+    def getUserBooksCount(self, user_id):
+        try:
+            count = self.dao.getBooksCountByUser(user_id)
+            return count
+        except Exception as e:
+            return {"error": f"Failed to get book count: {str(e)}"}
 
-	def reserve(self, user_id, book_id):
-		books = self.dao.reserve(user_id, book_id)
+    def updateBook(self, book_id, name=None, edition=None, year=None, author=None, count=None, available=None):
+        try:
+            updated_book = self.dao.update(book_id, name, edition, year, author, count, available)
+            return updated_book
+        except Exception as e:
+            return {"error": f"Failed to update book: {str(e)}"}
 
-		return books
-
-	def getUserBooks(self, user_id):
-		books = self.dao.getBooksByUser(user_id)
-
-		return books
-
-	def getUserBooksCount(self, user_id):
-		books = self.dao.getBooksCountByUser(user_id)
-
-		return books
-
-	def delete(self, id):
-		self.dao.delete(id)
+    def delete(self, id):
+        try:
+            self.dao.delete(id)
+            return {"message": "Book deleted successfully"}
+        except Exception as e:
+            return {"error": f"Failed to delete book: {str(e)}"}
