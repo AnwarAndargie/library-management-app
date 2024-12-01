@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block head %} {{super()}}
+<link rel="stylesheet" href="../static/home.css" />
+{% endblock %} {% block content %}
 <h1>Home page</h1>
-<p>Welecome to my awesome homepage</p>
+<p class="important">Welecome to my awesome homepage</p>
 {% endblock %}
