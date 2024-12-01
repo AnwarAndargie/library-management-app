@@ -5,6 +5,8 @@ from models.DAO import DAO
 
 DAO = DAO(app)
 
+from routes.books import book_view
+
 if __name__ == '__main__': 
     app.run(debug=True)
 
@@ -12,3 +14,5 @@ if __name__ == '__main__':
 @app.route('/')
 def index():
   return render_template('home.html')
+
+app.register_blueprint(book_view)

@@ -1,5 +1,5 @@
 from flaskext.mysql import MySQL
-class DB():
+class DB(object):
 	host = "localhost"
 	user = "root"
 	password = ""

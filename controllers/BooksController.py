@@ -1,6 +1,6 @@
 from App.Books import Books
 
-class BookController:
+class BooksController():
     def __init__(self, DAO):
         self.misc = Books(DAO.db.book)
         self.dao = self.misc.dao
@@ -17,7 +17,7 @@ class BookController:
             if user_id is not None:
                 book_list = self.dao.listByUser(user_id)
             else:
-                book_list = self.dao.list(availability)
+                book_list = self.dao.getAllBooks(availability)
             return book_list
         except Exception as e:
             return {"error": f"Failed to retrieve books: {str(e)}"}

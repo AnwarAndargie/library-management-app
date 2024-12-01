@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block head %} {{super()}}
+<link rel="stylesheet" href="../static/books.css" />
+{% endblock %} {% block content %}
+
+<div class="books-container">
+  <h1>Books Collection</h1>
+  <p>Here is a list of all available books in our library.</p>
+
+  <table class="books-table">
+    <thead>
+      <tr>
+        <th>Book ID</th>
+        <th>Name</th>
+        <th>Author</th>
+        <th>Edition</th>
+        <th>Quantity</th>
+        <th>Uploaded At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in books %}
+      <tr>
+        <td>{{ book.id }}</td>
+        <td>{{ book.name }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.edition }}</td>
+        <td>{{ book.quantity }}</td>
+        <td>{{ book.uploaded_at }}</td>
+        <td>
+          <!-- Placeholder for action buttons (e.g., reserve, view details) -->
+          <!-- <a
+            href="{{ url_for('reserve_book', book_id=book.id) }}"
+            class="reserve-btn"
+            >Reserve</a
+          > -->
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="7">No books available.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

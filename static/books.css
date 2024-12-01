@@ -1,0 +1,32 @@
+.books-container {
+  margin: 20px;
+}
+
+.books-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.books-table th,
+.books-table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.books-table th {
+  background-color: #f4f4f4;
+}
+
+.reserve-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 5px 10px;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.reserve-btn:hover {
+  background-color: #45a049;
+}
