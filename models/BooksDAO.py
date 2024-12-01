@@ -1,4 +1,4 @@
-class BookDAO():
+class BooksDAO():
 	def __init__(self, DAO):
 		self.db = DAO
 		self.db.table = "books"
