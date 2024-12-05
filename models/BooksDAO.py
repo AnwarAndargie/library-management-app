@@ -1,4 +1,4 @@
-class BooksDAO():
+class BooksDAO:
     def __init__(self, db):
         self.db = db
         self.table = "books"
@@ -10,7 +10,7 @@ class BooksDAO():
             self.db.commit()
             return {"message": "Book created successfully"}
         except Exception as e:
-            return {"error": f"Failed to create book: {str(e)}"}
+            return {"error": f"Failed to create book '{name}': {str(e)}"}
 
     def delete(self, id):
         try:
@@ -19,7 +19,7 @@ class BooksDAO():
             self.db.commit()
             return {"message": "Book deleted successfully"}
         except Exception as e:
-            return {"error": f"Failed to delete book: {str(e)}"}
+            return {"error": f"Failed to delete book with ID {id}: {str(e)}"}
 
     def getBook(self, id):
         try:
@@ -27,43 +27,47 @@ class BooksDAO():
             book = self.db.query(query, (id,)).fetchone()
             return book if book else {"error": "Book not found"}
         except Exception as e:
-            return {"error": f"Failed to retrieve book: {str(e)}"}
+            return {"error": f"Failed to retrieve book with ID {id}: {str(e)}"}
 
     def check_availability(self, id):
         try:
-            book = self.getBook(id)
-            if not book or book['count'] < 1:
-                return False
-            return True
+            query = f"SELECT count FROM {self.table} WHERE id = ?"
+            result = self.db.query(query, (id,)).fetchone()
+            return result and result["count"] > 0
         except Exception as e:
-            return {"error": f"Failed to check availability: {str(e)}"}
+            return {"error": f"Failed to check availability for book ID {id}: {str(e)}"}
 
-    def getAllBooks(self, availability=1):
+    def getAllBooksPaginated(self, availability=1, offset=0, limit=10):
         try:
             query = f"SELECT * FROM {self.table}"
-            if availability == 1:
+            params = []
+            if availability == 2:
                 query += " WHERE available = ?"
-                books = self.db.query(query, (availability,))
-            else:
-                books = self.db.query(query)
-            return books.fetchall()
+                params.append(availability)
+            query += " LIMIT ? OFFSET ?"
+            params.extend([limit, offset])
+            books = self.db.query(query, tuple(params)).fetchall()
+            return books
         except Exception as e:
             return {"error": f"Failed to retrieve books: {str(e)}"}
 
-    def search_book(self, name, availability=1):
+    def search_book(self, keyword, availability=1):
         try:
-            query = f"SELECT * FROM {self.table} WHERE name LIKE ?"
-            params = (f"%{name}%",)
+            query = f"SELECT * FROM {self.table} WHERE (name LIKE ? OR author LIKE ?)"
+            params = [f"%{keyword}%", f"%{keyword}%"]
             if availability == 1:
                 query += " AND available = ?"
-                params += (availability,)
-            books = self.db.query(query, params).fetchall()
+                params.append(availability)
+            books = self.db.query(query, tuple(params)).fetchall()
             return books
         except Exception as e:
-            return {"error": f"Failed to search books: {str(e)}"}
+            return {"error": f"Failed to search books with keyword '{keyword}': {str(e)}"}
 
     def updateBook(self, id, name=None, edition=None, year=None, author=None, count=None, available=None):
         try:
+            if count is not None and count < 0:
+                return {"error": "Count cannot be negative"}
+            
             updates = []
             params = []
             if name:
@@ -94,4 +98,4 @@ class BooksDAO():
             else:
                 return {"error": "No fields to update"}
         except Exception as e:
-            return {"error": f"Failed to update book: {str(e)}"}
+            return {"error": f"Failed to update book with ID {id}: {str(e)}"}
