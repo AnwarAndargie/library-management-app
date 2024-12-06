@@ -1,4 +1,5 @@
 from flaskext.mysql import MySQL
+from pymysql.cursors import DictCursor
 class DB(object):
 	host = "localhost"
 	user = "root"
@@ -11,7 +12,7 @@ class DB(object):
 		app.config["MYSQL_DATABASE_USER"] = self.user
 		app.config["MYSQL_DATABASE_PASSWORD"] = self.password
 		app.config["MYSQL_DATABASE_DB"] = self.db
-		self.mysql = MySQL(app)
+		self.mysql = MySQL(app, cursorClass=DictCursor)
 	
 
 	def cur(self):

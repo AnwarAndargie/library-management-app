@@ -6,9 +6,14 @@ from models.DAO import DAO
 DAO = DAO(app)
 
 from routes.books import book_view
+app.jinja_env.globals.update(
+   str=str,
+)
+
 
 if __name__ == '__main__': 
     app.run(debug=True)
+
 
 
 @app.route('/')
