@@ -35,5 +35,16 @@
       {% endfor %}
     </tbody>
   </table>
+  <form action="{{ url_for('book_routes.add_book') }}" method="POST">
+    <h2>Add New Book</h2>
+    <input type="text" name="name" placeholder="Book Name" required /><br />
+    <input type="text" name="edition" placeholder="Edition" required /><br />
+    <input type="text" name="year" placeholder="Year" required /><br />
+    <input type="text" name="author" placeholder="Author" required /><br />
+    <input type="number" name="count" placeholder="Quantity" required /><br />
+    <label for="available">Available: </label
+    ><input type="checkbox" name="available" /><br />
+    <button type="submit" class="reserve-btn">Add Book</button>
+  </form>
 </div>
 {% endblock %}
