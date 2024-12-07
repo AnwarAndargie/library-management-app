@@ -1,5 +1,5 @@
 body {
-  background-image: linear-gradient(45deg, white, blue);
+  background-image: linear-gradient(45deg, white, rgb(128, 134, 136));
 }
 .books-container {
   margin: 20px;
@@ -85,5 +85,22 @@ form .add-btn {
   margin-left: 60%;
 }
 form .add-btn:hover {
+  background-color: rgb(90, 150, 224);
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+.actions button {
+  outline: none;
+  width: 6rem;
+  height: 2rem;
+  border: 1px solid white;
+  background-color: rgb(46, 114, 198);
+  color: white;
+  cursor: pointer;
+}
+.actions button:hover {
   background-color: rgb(90, 150, 224);
 }

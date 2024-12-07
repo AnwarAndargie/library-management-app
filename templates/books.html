@@ -14,7 +14,6 @@
         <th>Author</th>
         <th>Edition</th>
         <th>Quantity</th>
-        <th>Uploaded At</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -25,8 +24,12 @@
         <td>{{ book.name }}</td>
         <td>{{ book.author }}</td>
         <td>{{ book.edition }}</td>
-        <td>{{ book.quantity }}</td>
-        <td>{{ book.uploaded_at }}</td>
+        <td>{{ book.count }}</td>
+        <td>
+          <div class="actions">
+            <button>Delete</button> <button>Update</button>
+          </div>
+        </td>
       </tr>
       {% else %}
       <tr>
