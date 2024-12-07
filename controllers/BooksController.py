@@ -9,8 +9,6 @@ class BooksController:
         self.dao = self.misc.dao
 
     def createBook(self, name, edition, year, author, count, available):
-        if count < 0:
-            return {"error": "Count must be a non-negative integer."}
         try:
             logging.info(f"Creating book: {name}, {edition}, {year}")
             book = self.dao.createBook(name, edition, year, author, count, available)
