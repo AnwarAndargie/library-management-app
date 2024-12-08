@@ -30,7 +30,7 @@ class BooksController:
     @staticmethod
     def get_book_by_id(book_id):
         try:
-            book = Books.query.get(book_id)
+            book =Books.query.get(book_id)
             if book is None:
                 return {"error": "Book not found"}
             return book
