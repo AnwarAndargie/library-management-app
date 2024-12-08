@@ -68,7 +68,14 @@
 .register-container form button:hover {
   background-color: #0056b3;
 }
-
+.error {
+  color: red;
+  text-align: center;
+}
+.success {
+  color: rgb(9, 197, 9);
+  text-align: center;
+}
 /* Responsive Design */
 @media (max-width: 600px) {
   .register-container form {
