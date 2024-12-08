@@ -34,18 +34,22 @@ def register():
         return render_template('sign-in.html', error=error_message), 500
 
 
-@user_view.route('/login/', methods=['POST'])
+@user_view.route('/login/', methods=['GET','POST'])
 def login():
     try:
-        data = request.get_json()  # For JSON payloads
-        email = data.get('email')
-        password = data.get('password')
+        if request.method == "GET":
+            return render_template('login.html')
+        
+        email = request.form.get('email')
+        password = request.form.get('password')
         
         if not all([email, password]):
             return jsonify({"error": "Missing email or password"}), 400
         
         response = users_controller.login(email, password)
-        return jsonify(response), 200 if "success" in response else 400
+        if "error" in response:
+            return render_template('login.html', error=response["error"]), 400
+        return render_template('login.html', success=response["success"])
     except Exception as e:
         logging.error(f"Login error: {e}")
         return jsonify({"error": f"Error in logging in: {str(e)}"}), 500
