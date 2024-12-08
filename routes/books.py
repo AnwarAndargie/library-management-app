@@ -25,7 +25,7 @@ def home(id):
             return render_template("books.html", books=books)
     except Exception as e:
         logging.error(e)
-        return render_template('error.html', error=f"An error occurred: {str(e)}")
+        return render_template('books.html', error=f"An error occurred: {str(e)}")
 
 
 @book_view.route('/books/add', methods=['POST'])

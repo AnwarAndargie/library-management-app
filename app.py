@@ -19,7 +19,9 @@ migrate = Migrate(app, db)
 
 
 from routes.books import book_view
+from routes.users import user_view
 app.register_blueprint(book_view)
+app.register_blueprint(user_view)
 
 
 app.jinja_env.globals.update(str=str)
