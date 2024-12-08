@@ -5,9 +5,11 @@ from controllers.UsersController import UsersController
 user_view = Blueprint('user_view', __name__, template_folder="templates")
 users_controller = UsersController()
 
-@user_view.route('/users/register/', methods=['POST'])
+@user_view.route('/users/register/', methods=['POST','GET'])
 def register():
     try:
+        if request.method == "GET":
+            return render_template('sign-in.html')
         data = request.get_json()  # For JSON payloads
         username = data.get('username')
         email = data.get('email')
@@ -20,7 +22,7 @@ def register():
         return jsonify(response), 200 if "success" in response else 400
     except Exception as e:
         logging.error(f"Registration error: {e}")
-        return jsonify({"error": f"Error in registration: {str(e)}"}), 500
+        return jsonify({'error':f"an error occured {str(e)}"})
 
 @user_view.route('/users/login', methods=['POST'])
 def login():

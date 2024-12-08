@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block content %}
+<section>
+  <div class="registr-container">
+    <form
+      action="
+    /users/register"
+    >
+      <div>
+        <label for="username">UserName: </label>
+        <input type="text" name="username" placeholder="enter your username" />
+      </div>
+      <div>
+        <label for="username">Email: </label>
+        <input type="text" name="email" placeholder="enter your email" />
+      </div>
+      <div>
+        <label for="username">Password: </label>
+        <input type="text" name="password" placeholder="enter your password" />
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
