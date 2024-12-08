@@ -5,7 +5,7 @@ from controllers.UsersController import UsersController
 user_view = Blueprint('user_view', __name__, template_folder="templates")
 users_controller = UsersController()
 
-@user_view.route('/users/register/', methods=['POST','GET'])
+@user_view.route('/register/', methods=['POST','GET'])
 def register():
     try:
         if request.method == "GET":
@@ -24,7 +24,7 @@ def register():
         logging.error(f"Registration error: {e}")
         return jsonify({'error':f"an error occured {str(e)}"})
 
-@user_view.route('/users/login', methods=['POST'])
+@user_view.route('/login/', methods=['POST'])
 def login():
     try:
         data = request.get_json()  # For JSON payloads
