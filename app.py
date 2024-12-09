@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 
 app = Flask(__name__)
@@ -12,7 +13,7 @@ db_name = "lms"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{user}:{pin}@{host}/{db_name}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+app.config["SECRET_TOKEN"] = '5ad22d041008936aab0e23d285f192fc9f7d46cd896c7fc3ff44954789730f17'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

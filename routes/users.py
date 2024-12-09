@@ -26,7 +26,7 @@ def register():
       
         if "error" in response:
             return render_template('sign-in.html', error=response["error"]), 400
-        return render_template('sign-in.html', success=response["success"])
+        return render_template('sign-in.html', success=response["success"]) 
 
     except Exception as e:
         logging.error(f"Registration error: {str(e)}")
