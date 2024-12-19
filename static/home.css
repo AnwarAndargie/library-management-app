@@ -29,17 +29,20 @@ h2 {
 }
 .home-card {
   margin-top: 18px;
-  width: 70%;
-  padding-left: 12rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button {
   outline: none;
-  width: 10rem;
-  height: 2rem;
+  width: 12rem;
+  height: 3rem;
+  border-radius: 1rem;
   border: 1px solid white;
   padding: 3px;
-  background: tomato;
+  background: rgb(5, 51, 205);
   cursor: pointer;
 }
 button p {
@@ -48,7 +51,7 @@ button p {
   text-transform: capitalize;
 }
 button:hover {
-  background-color: rgb(252, 115, 91);
+  background-color: rgb(31, 76, 223);
   transition: all;
   transition-duration: 500ms;
 }
