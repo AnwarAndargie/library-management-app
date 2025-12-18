@@ -1,53 +1,43 @@
 from flask import Blueprint, render_template, request, jsonify
 import logging
-from app import db
+from extensions import db
 from App.Books import Books
 
 
 book_view = Blueprint('book_view', __name__, template_folder='templates')
 
 
-@book_view.route('/books/', defaults={'id': None}, methods=['GET', 'POST'])
+@book_view.route('/books/', defaults={'id': None}, methods=['GET'])
 @book_view.route('/books/<int:id>', methods=['GET'])
 def home(id):
     try:
         if id is not None:
-           
             book = Books.query.get(id)
             if not book:
-                return render_template('book_view.html', error="No book found!")
-            return render_template("book_view.html", books=[book])
+                return jsonify({"error": "No book found!"}), 404
+            return jsonify([book.to_dict()])
         else:
-           
             books = Books.query.all()
-            if not books:
-                return render_template('books.html', error="No books found!")
-            return render_template("books.html", books=books)
+            return jsonify([book.to_dict() for book in books])
     except Exception as e:
         logging.error(e)
-        return render_template('books.html', error=f"An error occurred: {str(e)}")
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 
 @book_view.route('/books/add', methods=['POST'])
 def add_book():
     try:
-      
-        name = request.form.get("name")
-        edition = request.form.get("edition")
-        year = request.form.get("year")
-        author = request.form.get("author")
-        count = int(request.form.get("count", 0))
-        available = request.form.get("available") == "true"
+        data = request.get_json()
+        name = data.get("name")
+        edition = data.get("edition")
+        year = data.get("year")
+        author = data.get("author")
+        count = int(data.get("count", 0))
+        available = data.get("available")
 
-       
         if not name or not edition or not year or not author or count < 1:
-            return render_template(
-                "books.html",
-                error="All fields are required, and count must be a positive integer.",
-                books=Books.query.all(),
-            )
+            return jsonify({"error": "All fields are required, and count must be a positive integer."}), 400
 
-        # Create a new book instance
         new_book = Books(
             name=name,
             edition=edition,
@@ -57,15 +47,14 @@ def add_book():
             available=available,
         )
 
-        # Add to database
         db.session.add(new_book)
         db.session.commit()
 
-        return render_template("books.html", msg="Book added successfully!", books=Books.query.all())
+        return jsonify({"message": "Book added successfully!", "book": new_book.to_dict()}), 201
 
     except Exception as e:
         logging.error(f"Error in /books/add: {e}")
-        return render_template('error.html', error=f"An error occurred: {str(e)}")
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 
 @book_view.route('/books/delete/<int:id>', methods=['POST'])
@@ -96,12 +85,13 @@ def update_book(id):
             return jsonify({"error": "Book not found"}), 404
 
         # Update fields from form data
-        book.name = request.form.get("name", book.name)
-        book.edition = request.form.get("edition", book.edition)
-        book.year = request.form.get("year", book.year)
-        book.author = request.form.get("author", book.author)
-        book.count = int(request.form.get("count", book.count))
-        book.available = request.form.get("available") == "true"
+        data = request.get_json()
+        book.name = data.get("name", book.name)
+        book.edition = data.get("edition", book.edition)
+        book.year = data.get("year", book.year)
+        book.author = data.get("author", book.author)
+        book.count = int(data.get("count", book.count))
+        book.available = data.get("available", book.available)
 
         # Commit changes to database
         db.session.commit()

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import mapped_column, Mapped
 from sqlalchemy import String
-from app import db
+from extensions import db
 
 class Users(db.Model):
     __tablename__ = 'users'
@@ -8,3 +8,10 @@ class Users(db.Model):
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)  
     email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)  
     password: Mapped[str] = mapped_column(String(200), nullable=False)  
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email
+        }

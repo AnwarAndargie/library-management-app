@@ -1,4 +1,4 @@
-from app import db
+from extensions import db
 
 class Books(db.Model):
     __tablename__ = "books"
@@ -10,3 +10,14 @@ class Books(db.Model):
     year = db.Column(db.String(20), nullable=False) 
     count = db.Column(db.Integer, nullable=False)
     available = db.Column(db.Boolean, nullable=False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "author": self.author,
+            "edition": self.edition,
+            "year": self.year,
+            "count": self.count,
+            "available": self.available
+        }
