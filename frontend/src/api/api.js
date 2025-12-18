@@ -51,4 +51,8 @@ export const api = {
         });
         return response.json();
     },
+    getStats: async () => {
+        const response = await fetch(`${API_URL}/media/stats`);
+        return response.json();
+    },
 };

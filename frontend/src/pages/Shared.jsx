@@ -7,25 +7,34 @@ import MediaCard from '../components/dashboard/MediaCard';
 
 export default function Shared() {
     const [media, setMedia] = useState([]);
+    const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [viewMode, setViewMode] = useState('grid');
 
     useEffect(() => {
-        const fetchMedia = async () => {
+        const fetchData = async () => {
             try {
-                const data = await api.getMedia();
-                if (!data.error) {
-                    setMedia(data.slice(0, 3));
+                const [mediaData, statsData] = await Promise.all([
+                    api.getMedia(),
+                    api.getStats()
+                ]);
+                if (!mediaData.error) {
+                    setMedia(mediaData);
                 }
+                setStats(statsData);
             } catch (err) {
                 console.error(err);
             } finally {
                 setLoading(false);
             }
         };
-        fetchMedia();
+        fetchData();
     }, []);
+
+    const filteredMedia = media.filter(item =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     if (loading) return (
         <div className="flex items-center justify-center min-h-screen bg-zinc-950 pt-16">
@@ -84,7 +93,7 @@ export default function Shared() {
                                 </div>
                                 <span className="text-sm font-medium text-zinc-400">Total Shared</span>
                             </div>
-                            <p className="text-2xl font-bold">{media.length}</p>
+                            <p className="text-2xl font-bold">{stats?.shared_files || media.length}</p>
                         </div>
                         <div className="glass-card rounded-2xl p-5">
                             <div className="flex items-center gap-3 mb-3">
@@ -93,7 +102,7 @@ export default function Shared() {
                                 </div>
                                 <span className="text-sm font-medium text-zinc-400">Shared With</span>
                             </div>
-                            <p className="text-2xl font-bold">12</p>
+                            <p className="text-2xl font-bold">{stats?.shared_with || 0}</p>
                         </div>
                         <div className="glass-card rounded-2xl p-5">
                             <div className="flex items-center gap-3 mb-3">
@@ -102,11 +111,11 @@ export default function Shared() {
                                 </div>
                                 <span className="text-sm font-medium text-zinc-400">Active Links</span>
                             </div>
-                            <p className="text-2xl font-bold">5</p>
+                            <p className="text-2xl font-bold">{stats?.active_links || 0}</p>
                         </div>
                     </div>
 
-                    {media.length === 0 ? (
+                    {filteredMedia.length === 0 ? (
                         <div className="py-20 flex flex-col items-center justify-center border-2 border-dashed border-zinc-800 rounded-3xl">
                             <div className="w-16 h-16 bg-zinc-900 rounded-2xl flex items-center justify-center mb-4">
                                 <Share2 className="text-zinc-700" size={32} />
@@ -116,7 +125,7 @@ export default function Shared() {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {media.map(item => (
+                            {filteredMedia.map(item => (
                                 <MediaCard key={item.id} item={item} />
                             ))}
                         </div>

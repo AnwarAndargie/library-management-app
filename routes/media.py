@@ -105,3 +105,51 @@ def ai_process():
         return jsonify({"response": response}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@media_view.route('/media/stats', methods=['GET'])
+def get_stats():
+    try:
+        # Get total files count
+        total_files = Media.query.count()
+        
+        # Get counts by type
+        image_count = Media.query.filter_by(type='image').count()
+        video_count = Media.query.filter_by(type='video').count()
+        pdf_count = Media.query.filter_by(type='pdf').count()
+        
+        # Calculate total storage from size field (parse sizes like "2.4 MB")
+        total_storage_mb = 0
+        all_media = Media.query.all()
+        for m in all_media:
+            if m.size:
+                try:
+                    size_str = m.size.lower()
+                    if 'gb' in size_str:
+                        total_storage_mb += float(size_str.replace('gb', '').strip()) * 1024
+                    elif 'mb' in size_str:
+                        total_storage_mb += float(size_str.replace('mb', '').strip())
+                    elif 'kb' in size_str:
+                        total_storage_mb += float(size_str.replace('kb', '').strip()) / 1024
+                except:
+                    pass
+        
+        # Format storage
+        if total_storage_mb >= 1024:
+            storage_str = f"{total_storage_mb / 1024:.1f} GB"
+        else:
+            storage_str = f"{total_storage_mb:.1f} MB"
+        
+        return jsonify({
+            "total_files": total_files,
+            "image_count": image_count,
+            "video_count": video_count,
+            "pdf_count": pdf_count,
+            "total_storage": storage_str,
+            "views_this_week": 0,  # Placeholder - would need view tracking
+            "shared_with": 0,  # Placeholder - would need sharing feature
+            "shared_files": 0,  # Placeholder
+            "active_links": 0  # Placeholder
+        }), 200
+    except Exception as e:
+        logging.error(f"Error getting stats: {e}")
+        return jsonify({"error": str(e)}), 500

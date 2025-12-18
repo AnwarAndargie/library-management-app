@@ -15,29 +15,44 @@ import AIAssistant from '../components/dashboard/AIAssistant';
 import StatCard from '../components/dashboard/StatCard';
 import MediaCard from '../components/dashboard/MediaCard';
 import TabItem from '../components/ui/TabItem';
+import UploadModal from '../components/dashboard/UploadModal';
 
 export default function Dashboard() {
     const [media, setMedia] = useState([]);
+    const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [viewMode, setViewMode] = useState('grid');
     const [activeTab, setActiveTab] = useState('all');
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
-    useEffect(() => {
-        fetchMedia();
-    }, []);
-
-    const fetchMedia = async () => {
+    const fetchData = async () => {
         try {
-            const data = await api.getMedia();
-            if (data.error) throw new Error(data.error);
-            setMedia(data);
+            const [mediaData, statsData] = await Promise.all([
+                api.getMedia(),
+                api.getStats()
+            ]);
+            if (mediaData.error) throw new Error(mediaData.error);
+            setMedia(mediaData);
+            setStats(statsData);
         } catch (err) {
             setError(err.message);
         } finally {
             setLoading(false);
         }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const handleUploadSuccess = () => {
+        fetchData();
+    };
+
+    const handleDeleteSuccess = () => {
+        fetchData();
     };
 
     const filteredMedia = media.filter(item =>
@@ -49,7 +64,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-center min-h-screen bg-zinc-950 pt-16">
             <div className="flex flex-col items-center gap-4">
                 <div className="w-12 h-12 border-4 border-zinc-800 border-t-zinc-200 rounded-full animate-spin"></div>
-                <p className="text-zinc-400 font-medium animate-pulse">Initializing AI Core...</p>
+                <p className="text-zinc-400 font-medium animate-pulse">Loading dashboard...</p>
             </div>
         </div>
     );
@@ -62,10 +77,11 @@ export default function Dashboard() {
                 <DashboardHeader
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
+                    onUploadClick={() => setIsUploadModalOpen(true)}
                 />
 
                 <div className="p-8">
-                    <StatsSection />
+                    <StatsSection stats={stats} />
 
                     <SectionHeader
                         viewMode={viewMode}
@@ -77,16 +93,22 @@ export default function Dashboard() {
                         setActiveTab={setActiveTab}
                     />
 
-                    <MediaGrid media={filteredMedia} />
+                    <MediaGrid media={filteredMedia} onDeleteSuccess={handleDeleteSuccess} />
                 </div>
             </main>
 
             <AIAssistant />
+
+            <UploadModal
+                isOpen={isUploadModalOpen}
+                onClose={() => setIsUploadModalOpen(false)}
+                onUploadSuccess={handleUploadSuccess}
+            />
         </div>
     );
 }
 
-function DashboardHeader({ searchQuery, setSearchQuery }) {
+function DashboardHeader({ searchQuery, setSearchQuery, onUploadClick }) {
     return (
         <header className="h-16 border-b border-zinc-800 flex items-center justify-between px-8 sticky top-16 bg-zinc-950/95 backdrop-blur-md z-10">
             <div className="relative w-80">
@@ -100,7 +122,10 @@ function DashboardHeader({ searchQuery, setSearchQuery }) {
                 />
             </div>
 
-            <button className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-violet-600/25">
+            <button
+                onClick={onUploadClick}
+                className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-violet-600/25"
+            >
                 <Plus size={18} />
                 Upload Media
             </button>
@@ -108,13 +133,33 @@ function DashboardHeader({ searchQuery, setSearchQuery }) {
     );
 }
 
-function StatsSection() {
+function StatsSection({ stats }) {
     return (
         <div className="grid grid-cols-4 gap-4 mb-8">
-            <StatCard icon={<HardDrive size={20} />} label="Total Storage" value="2.4 GB" change="+12%" />
-            <StatCard icon={<ImageIcon size={20} />} label="Total Files" value="1,284" change="+8%" />
-            <StatCard icon={<TrendingUp size={20} />} label="Views This Week" value="3.2K" change="+24%" />
-            <StatCard icon={<Users size={20} />} label="Shared With" value="12" change="+2" />
+            <StatCard
+                icon={<HardDrive size={20} />}
+                label="Total Storage"
+                value={stats?.total_storage || '0 MB'}
+                change={stats?.total_files > 0 ? '+' + stats?.total_files + ' files' : '--'}
+            />
+            <StatCard
+                icon={<ImageIcon size={20} />}
+                label="Total Files"
+                value={stats?.total_files?.toLocaleString() || '0'}
+                change={stats?.image_count ? `+${stats.image_count} images` : '--'}
+            />
+            <StatCard
+                icon={<TrendingUp size={20} />}
+                label="Views This Week"
+                value={stats?.views_this_week?.toLocaleString() || '0'}
+                change="--"
+            />
+            <StatCard
+                icon={<Users size={20} />}
+                label="Shared With"
+                value={stats?.shared_with?.toString() || '0'}
+                change="--"
+            />
         </div>
     );
 }
@@ -166,7 +211,7 @@ function TabsSection({ activeTab, setActiveTab }) {
     );
 }
 
-function MediaGrid({ media }) {
+function MediaGrid({ media, onDeleteSuccess }) {
     if (media.length === 0) {
         return (
             <div className="py-20 flex flex-col items-center justify-center border-2 border-dashed border-zinc-800 rounded-3xl">
@@ -182,7 +227,7 @@ function MediaGrid({ media }) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {media.map(item => (
-                <MediaCard key={item.id} item={item} />
+                <MediaCard key={item.id} item={item} onDeleteSuccess={onDeleteSuccess} />
             ))}
         </div>
     );

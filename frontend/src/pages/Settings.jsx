@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { User, Bell, Shield, Palette, HardDrive, CreditCard, Save, Check } from 'lucide-react';
 import Sidebar from '../components/dashboard/Sidebar';
 import { useAuth } from '../context/AuthContext';
+import { api } from '../api/api';
 
 const settingsSections = [
     { id: 'profile', label: 'Profile', icon: User },
@@ -16,15 +17,43 @@ export default function Settings() {
     const { user } = useAuth();
     const [activeSection, setActiveSection] = useState('profile');
     const [saved, setSaved] = useState(false);
+    const [stats, setStats] = useState(null);
     const [formData, setFormData] = useState({
         username: user?.username || '',
         email: user?.email || '',
         bio: '',
     });
 
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const data = await api.getStats();
+                setStats(data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchStats();
+    }, []);
+
     const handleSave = () => {
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
+    };
+
+    // Calculate storage percentage
+    const getStoragePercentage = () => {
+        if (!stats?.total_storage) return 0;
+        const storage = stats.total_storage;
+        // Parse storage string (e.g., "2.4 GB" or "500 MB")
+        let usedMB = 0;
+        if (storage.includes('GB')) {
+            usedMB = parseFloat(storage) * 1024;
+        } else if (storage.includes('MB')) {
+            usedMB = parseFloat(storage);
+        }
+        const totalMB = 5 * 1024; // 5 GB limit
+        return Math.min(Math.round((usedMB / totalMB) * 100), 100);
     };
 
     return (
@@ -43,8 +72,8 @@ export default function Settings() {
                                     key={section.id}
                                     onClick={() => setActiveSection(section.id)}
                                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${activeSection === section.id
-                                            ? 'bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 text-zinc-50 border border-violet-500/30'
-                                            : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200'
+                                        ? 'bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 text-zinc-50 border border-violet-500/30'
+                                        : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200'
                                         }`}
                                 >
                                     <section.icon size={18} />
@@ -164,10 +193,21 @@ export default function Settings() {
                                 <div className="glass-card rounded-2xl p-6 mb-6">
                                     <div className="flex justify-between mb-4">
                                         <span className="text-sm text-zinc-400">Used storage</span>
-                                        <span className="text-sm font-medium">2.4 GB / 5 GB</span>
+                                        <span className="text-sm font-medium">{stats?.total_storage || '0 MB'} / 5 GB</span>
                                     </div>
                                     <div className="w-full h-3 bg-zinc-800 rounded-full overflow-hidden">
-                                        <div className="h-full w-[48%] bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full"></div>
+                                        <div
+                                            className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-500"
+                                            style={{ width: `${getStoragePercentage()}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+                                <div className="glass-card rounded-2xl p-6 mb-6">
+                                    <h3 className="font-semibold mb-4">Storage Breakdown</h3>
+                                    <div className="space-y-3">
+                                        <StorageItem label="Images" count={stats?.image_count || 0} color="bg-violet-500" />
+                                        <StorageItem label="Videos" count={stats?.video_count || 0} color="bg-fuchsia-500" />
+                                        <StorageItem label="Documents" count={stats?.pdf_count || 0} color="bg-cyan-500" />
                                     </div>
                                 </div>
                                 <button className="bg-zinc-800 text-zinc-50 px-4 py-2 rounded-lg text-sm font-medium hover:bg-zinc-700 transition-colors">
@@ -183,14 +223,14 @@ export default function Settings() {
                                 <div className="glass-card rounded-2xl p-6 border border-violet-500/30">
                                     <div className="flex items-center justify-between mb-4">
                                         <div>
-                                            <p className="font-semibold">Pro Plan</p>
-                                            <p className="text-sm text-zinc-500">$12/month</p>
+                                            <p className="font-semibold">Free Plan</p>
+                                            <p className="text-sm text-zinc-500">5 GB storage included</p>
                                         </div>
-                                        <span className="px-3 py-1 bg-violet-500/20 text-violet-400 rounded-full text-xs font-semibold">Active</span>
+                                        <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-semibold">Active</span>
                                     </div>
-                                    <p className="text-sm text-zinc-400 mb-4">Next billing date: January 18, 2025</p>
-                                    <button className="bg-zinc-800 text-zinc-50 px-4 py-2 rounded-lg text-sm font-medium hover:bg-zinc-700 transition-colors">
-                                        Manage Subscription
+                                    <p className="text-sm text-zinc-400 mb-4">Upgrade to Pro for unlimited storage and premium AI features</p>
+                                    <button className="bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
+                                        Upgrade to Pro
                                     </button>
                                 </div>
                             </div>
@@ -226,5 +266,17 @@ function ThemeOption({ label, active = false }) {
         <button className={`px-6 py-3 rounded-xl border transition-all ${active ? 'border-violet-500 bg-violet-500/10 text-violet-400' : 'border-zinc-800 text-zinc-400 hover:border-zinc-700'}`}>
             {label}
         </button>
+    );
+}
+
+function StorageItem({ label, count, color }) {
+    return (
+        <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+                <div className={`w-3 h-3 rounded-full ${color}`}></div>
+                <span className="text-sm text-zinc-400">{label}</span>
+            </div>
+            <span className="text-sm font-medium">{count} files</span>
+        </div>
     );
 }

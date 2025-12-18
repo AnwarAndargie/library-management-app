@@ -4,29 +4,35 @@ import { Search, Image as ImageIcon, LayoutGrid, List, Plus } from 'lucide-react
 import Sidebar from '../components/dashboard/Sidebar';
 import AIAssistant from '../components/dashboard/AIAssistant';
 import MediaCard from '../components/dashboard/MediaCard';
-import TabItem from '../components/ui/TabItem';
+import UploadModal from '../components/dashboard/UploadModal';
 
 export default function Images() {
     const [media, setMedia] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [viewMode, setViewMode] = useState('grid');
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
+    const fetchMedia = async () => {
+        try {
+            const data = await api.getMedia();
+            if (!data.error) {
+                setMedia(data.filter(item => item.type === 'image'));
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchMedia = async () => {
-            try {
-                const data = await api.getMedia();
-                if (!data.error) {
-                    setMedia(data.filter(item => item.type === 'image'));
-                }
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchMedia();
     }, []);
+
+    const handleUploadSuccess = () => {
+        fetchMedia();
+    };
 
     const filteredMedia = media.filter(item =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -53,7 +59,10 @@ export default function Images() {
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
-                    <button className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-violet-600/25">
+                    <button
+                        onClick={() => setIsUploadModalOpen(true)}
+                        className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-violet-600/25"
+                    >
                         <Plus size={18} />
                         Upload Image
                     </button>
@@ -92,13 +101,19 @@ export default function Images() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {filteredMedia.map(item => (
-                                <MediaCard key={item.id} item={item} />
+                                <MediaCard key={item.id} item={item} onDeleteSuccess={fetchMedia} />
                             ))}
                         </div>
                     )}
                 </div>
             </main>
             <AIAssistant />
+
+            <UploadModal
+                isOpen={isUploadModalOpen}
+                onClose={() => setIsUploadModalOpen(false)}
+                onUploadSuccess={handleUploadSuccess}
+            />
         </div>
     );
 }
