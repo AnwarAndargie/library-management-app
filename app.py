@@ -31,9 +31,9 @@ db.init_app(app)
 migrate.init_app(app, db)
 
 
-from routes.books import book_view
+from routes.media import media_view
 from routes.users import user_view
-app.register_blueprint(book_view)
+app.register_blueprint(media_view)
 app.register_blueprint(user_view)
 
 

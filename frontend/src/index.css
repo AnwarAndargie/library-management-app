@@ -1,1 +1,122 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Zinc Color Palette */
+    --zinc-50: #fafafa;
+    --zinc-100: #f4f4f5;
+    --zinc-200: #e4e4e7;
+    --zinc-300: #d4d4d8;
+    --zinc-400: #a1a1aa;
+    --zinc-500: #71717a;
+    --zinc-600: #52525b;
+    --zinc-700: #3f3f46;
+    --zinc-800: #27272a;
+    --zinc-900: #18181b;
+    --zinc-950: #09090b;
+
+    /* Primary Theme Colors */
+    --background: var(--zinc-950);
+    --foreground: var(--zinc-50);
+    --card: var(--zinc-900);
+    --card-foreground: var(--zinc-50);
+    --popover: var(--zinc-900);
+    --popover-foreground: var(--zinc-50);
+    --primary: var(--zinc-50);
+    --primary-foreground: var(--zinc-900);
+    --secondary: var(--zinc-800);
+    --secondary-foreground: var(--zinc-50);
+    --muted: var(--zinc-800);
+    --muted-foreground: var(--zinc-400);
+    --accent: var(--zinc-800);
+    --accent-foreground: var(--zinc-50);
+    --destructive: #ef4444;
+    --destructive-foreground: var(--zinc-50);
+    --border: var(--zinc-800);
+    --input: var(--zinc-800);
+    --ring: var(--zinc-300);
+
+    --radius: 0.75rem;
+}
+
+* {
+    box-sizing: border-box;
+    border-color: var(--border);
+}
+
+body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+    background: rgba(24, 24, 27, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card {
+    background: rgba(24, 24, 27, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+    background: rgba(24, 24, 27, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--zinc-800);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--zinc-700);
+}

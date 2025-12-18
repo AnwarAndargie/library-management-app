@@ -1,29 +1,37 @@
 const API_URL = "http://localhost:5000";
 
 export const api = {
-    getBooks: async () => {
-        const response = await fetch(`${API_URL}/books/`);
+    getMedia: async () => {
+        const response = await fetch(`${API_URL}/media/`);
         return response.json();
     },
-    addBook: async (book) => {
-        const response = await fetch(`${API_URL}/books/add`, {
+    addMedia: async (media) => {
+        const response = await fetch(`${API_URL}/media/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(book),
+            body: JSON.stringify(media),
         });
         return response.json();
     },
-    deleteBook: async (id) => {
-        const response = await fetch(`${API_URL}/books/delete/${id}`, {
-            method: "POST",
+    deleteMedia: async (id) => {
+        const response = await fetch(`${API_URL}/media/delete/${id}`, {
+            method: "DELETE",
         });
         return response.json();
     },
-    updateBook: async (id, book) => {
-        const response = await fetch(`${API_URL}/books/update/${id}`, {
+    updateMedia: async (id, media) => {
+        const response = await fetch(`${API_URL}/media/update/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(media),
+        });
+        return response.json();
+    },
+    aiProcess: async (prompt) => {
+        const response = await fetch(`${API_URL}/ai/process`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(book),
+            body: JSON.stringify({ prompt }),
         });
         return response.json();
     },
