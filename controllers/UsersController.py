@@ -25,7 +25,14 @@ class UsersController:
             return {"error": "User not found"}
         
         if check_password_hash(user.password, password):
-            return {"success": "Login successful"}
+            return {
+                "success": "Login successful",
+                "user": {
+                    "id": user.id,
+                    "username": user.username,
+                    "email": user.email
+                }
+            }
         else:
             return {"error": "Invalid credentials"}
 

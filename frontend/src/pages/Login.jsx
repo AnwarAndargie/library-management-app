@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { api } from '../api/api';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, ArrowRight, Sparkles } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -9,13 +10,16 @@ export default function Login() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError('');
         try {
             const res = await api.login({ email, password });
             if (res.error) throw new Error(res.error);
+            login(res.user);
             navigate('/dashboard');
         } catch (err) {
             setError(err.message);
