@@ -5,7 +5,7 @@ class Media(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(200), nullable=False)
-    type = db.Column(db.String(50), nullable=False) # image, video, pdf
+    type = db.Column(db.String(50), nullable=False)
     author = db.Column(db.String(200), nullable=False)
     url = db.Column(db.String(500), nullable=True)
     ai_description = db.Column(db.Text, nullable=True)

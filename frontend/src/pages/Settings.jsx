@@ -41,18 +41,16 @@ export default function Settings() {
         setTimeout(() => setSaved(false), 2000);
     };
 
-    // Calculate storage percentage
     const getStoragePercentage = () => {
         if (!stats?.total_storage) return 0;
         const storage = stats.total_storage;
-        // Parse storage string (e.g., "2.4 GB" or "500 MB")
         let usedMB = 0;
         if (storage.includes('GB')) {
             usedMB = parseFloat(storage) * 1024;
         } else if (storage.includes('MB')) {
             usedMB = parseFloat(storage);
         }
-        const totalMB = 5 * 1024; // 5 GB limit
+        const totalMB = 5 * 1024; 
         return Math.min(Math.round((usedMB / totalMB) * 100), 100);
     };
 

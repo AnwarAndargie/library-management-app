@@ -30,20 +30,18 @@ export default function Login() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-zinc-950 px-6 pt-16">
-            {/* Background */}
+        
             <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-950"></div>
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-gradient-to-r from-violet-600/10 to-fuchsia-600/10 rounded-full blur-3xl"></div>
 
             <div className="relative w-full max-w-md">
-                {/* Logo */}
+               
                 <div className="flex items-center justify-center gap-2 mb-8">
                     <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
                         <Sparkles size={20} className="text-zinc-950" />
                     </div>
                     <span className="font-bold text-xl text-zinc-50">miniMedia</span>
                 </div>
-
-                {/* Card */}
                 <div className="glass rounded-3xl p-8 border border-zinc-800/50">
                     <div className="text-center mb-8">
                         <h1 className="text-2xl font-bold text-zinc-50 mb-2">Welcome back</h1>
