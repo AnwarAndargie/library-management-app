@@ -48,7 +48,7 @@ export default function Documents() {
         <div className="flex min-h-screen bg-zinc-950 text-zinc-50 pt-16">
             <Sidebar />
             <main className="flex-1 ml-64 mr-80">
-                <header className="h-16 border-b border-zinc-800 flex items-center justify-between px-8 sticky top-16 bg-zinc-950/95 backdrop-blur-md z-10">
+                <header className="h-16 border-b border-zinc-800 flex items-center justify-between p-12 sticky top-16 bg-zinc-950/95 backdrop-blur-md z-10">
                     <div className="relative w-80">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
                         <input
@@ -61,7 +61,7 @@ export default function Documents() {
                     </div>
                     <button
                         onClick={() => setIsUploadModalOpen(true)}
-                        className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-violet-600/25"
+                        className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-violet-600/25 cursor-pointer hover:shadow-violet-600/50 active:scale-95"
                     >
                         <Plus size={18} />
                         Upload Document

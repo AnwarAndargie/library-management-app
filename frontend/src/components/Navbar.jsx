@@ -35,7 +35,7 @@ export default function Navbar() {
                             <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
                                 <Sparkles size={18} className="text-zinc-950" />
                             </div>
-                            <span className="font-bold text-lg text-zinc-50">AetherMedia</span>
+                            <span className="font-bold text-lg text-zinc-50">miniMedia</span>
                         </Link>
 
                         <div className="flex items-center gap-4">
@@ -60,7 +60,7 @@ export default function Navbar() {
                         <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
                             <Sparkles size={18} className="text-zinc-950" />
                         </div>
-                        <span className="font-bold text-lg text-zinc-50">AetherMedia</span>
+                        <span className="font-bold text-lg text-zinc-50">miniMedia</span>
                     </Link>
 
                     <div className="hidden md:flex items-center gap-8">

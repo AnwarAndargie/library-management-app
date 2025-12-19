@@ -40,7 +40,7 @@ export default function Login() {
                     <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
                         <Sparkles size={20} className="text-zinc-950" />
                     </div>
-                    <span className="font-bold text-xl text-zinc-50">AetherMedia</span>
+                    <span className="font-bold text-xl text-zinc-50">miniMedia</span>
                 </div>
 
                 {/* Card */}

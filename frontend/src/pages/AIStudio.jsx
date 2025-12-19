@@ -43,13 +43,13 @@ const aiTools = [
 ];
 
 export default function AIStudio() {
-    const [selectedTool, setSelectedTool] = useState(null);
+    const [ setSelectedTool] = useState(null);
 
     return (
         <div className="flex min-h-screen bg-zinc-950 text-zinc-50 pt-16">
             <Sidebar />
             <main className="flex-1 ml-64 mr-80">
-                <header className="h-16 border-b border-zinc-800 flex items-center px-8 sticky top-16 bg-zinc-950/95 backdrop-blur-md z-10">
+                <header className="h-16 border-b border-zinc-800 flex items-center p-12 sticky top-16 bg-zinc-950/95 backdrop-blur-md z-10">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 flex items-center justify-center">
                             <Sparkles size={20} />
@@ -99,7 +99,7 @@ export default function AIStudio() {
                         </div>
                         <div className="border-2 border-dashed border-zinc-800 rounded-2xl p-12 text-center">
                             <p className="text-zinc-500 mb-4">Drag and drop files here to batch process</p>
-                            <button className="bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-6 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity">
+                            <button className="bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-6 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity cursor-pointer">
                                 Select Files
                             </button>
                         </div>

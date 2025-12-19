@@ -83,7 +83,7 @@ export default function Landing() {
             <section className="py-32 border-t border-zinc-800/50">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold mb-4">Why AetherMedia?</h2>
+                        <h2 className="text-4xl font-bold mb-4">Why miniMedia?</h2>
                         <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
                             Experience the future of media management with AI-powered tools that work for you.
                         </p>
@@ -161,7 +161,7 @@ export default function Landing() {
                         Ready to transform your media workflow?
                     </h2>
                     <p className="text-zinc-400 text-lg mb-10">
-                        Join thousands of creators and businesses using AetherMedia.
+                        Join thousands of creators and businesses using miniMedia.
                     </p>
                     <Link
                         to="/register"
@@ -181,14 +181,14 @@ export default function Landing() {
                             <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
                                 <Sparkles size={18} className="text-zinc-950" />
                             </div>
-                            <span className="font-bold text-lg">AetherMedia</span>
+                            <span className="font-bold text-lg">miniMedia</span>
                         </div>
                         <div className="flex gap-8 text-sm text-zinc-500">
                             <a href="#" className="hover:text-zinc-300 transition-colors">Privacy</a>
                             <a href="#" className="hover:text-zinc-300 transition-colors">Terms</a>
                             <a href="#" className="hover:text-zinc-300 transition-colors">Contact</a>
                         </div>
-                        <p className="text-sm text-zinc-600">© 2025 AetherMedia. All rights reserved.</p>
+                        <p className="text-sm text-zinc-600">© 2025 miniMedia. All rights reserved.</p>
                     </div>
                 </div>
             </footer>

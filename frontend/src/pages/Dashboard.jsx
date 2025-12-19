@@ -21,7 +21,7 @@ export default function Dashboard() {
     const [media, setMedia] = useState([]);
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [ setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [viewMode, setViewMode] = useState('grid');
     const [activeTab, setActiveTab] = useState('all');
@@ -110,7 +110,7 @@ export default function Dashboard() {
 
 function DashboardHeader({ searchQuery, setSearchQuery, onUploadClick }) {
     return (
-        <header className="h-16 border-b border-zinc-800 flex items-center justify-between px-8 sticky top-16 bg-zinc-950/95 backdrop-blur-md z-10">
+        <header className="h-16 border-b border-zinc-800 flex items-center justify-between sticky top-16 bg-zinc-950/95 backdrop-blur-md z-10 p-12">
             <div className="relative w-80">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
                 <input
@@ -124,7 +124,7 @@ function DashboardHeader({ searchQuery, setSearchQuery, onUploadClick }) {
 
             <button
                 onClick={onUploadClick}
-                className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-violet-600/25"
+                className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-violet-600/25 hover:shadow-violet-600/50 active:scale-95 cursor-pointer"
             >
                 <Plus size={18} />
                 Upload Media
