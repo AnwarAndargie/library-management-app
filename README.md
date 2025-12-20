@@ -1,6 +1,5 @@
-# Library Management System
-
-A modern library management application built with **React**, **Tailwind CSS**, and **Flask**. This full-stack application provides a clean, responsive interface for managing books and users.
+# miniMedia
+a full‑stack media management application that organizes your images, videos, and documents in a unified dashboard. Built with a React (Vite) frontend and a Python/Flask backend, it supports user authentication, role-based dashboards, media uploads (Supabase), and an AI assistant that auto-generates metadata to improve search and discoverability.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.12-blue.svg)
@@ -12,7 +11,7 @@ A modern library management application built with **React**, **Tailwind CSS**, 
 - ✅ RESTful API architecture
 - ✅ PostgreSQL database integration
 - ✅ User authentication (registration & login)
-- ✅ CRUD operations for books
+- ✅ CRUD operations for media
 - ✅ Password hashing with Werkzeug
 - ✅ CORS enabled for frontend communication
 - ✅ Environment-based configuration
@@ -20,50 +19,11 @@ A modern library management application built with **React**, **Tailwind CSS**, 
 ### Frontend (React)
 - ✅ Modern, responsive UI with Tailwind CSS
 - ✅ React Router for navigation
-- ✅ Book management (add, view, delete)
+- ✅ Media management (add, view, delete)
 - ✅ User authentication pages
 - ✅ Real-time form validation
 - ✅ Availability status indicators
 - ✅ Clean, modular component architecture
-
-## 🏗️ Project Structure
-
-```
-library-management-app/
-├── backend/
-│   ├── App/                    # Models
-│   │   ├── Books.py
-│   │   └── Users.py
-│   ├── controllers/            # Business logic
-│   │   └── UsersController.py
-│   ├── routes/                 # API endpoints
-│   │   ├── books.py
-│   │   └── users.py
-│   ├── templates/              # Legacy templates (not used)
-│   ├── static/                 # Static files
-│   ├── app.py                  # Main Flask application
-│   ├── extensions.py           # Flask extensions
-│   └── .env                    # Environment variables
-│
-├── frontend/
-│   ├── src/
-│   │   ├── api/               # API client
-│   │   │   └── api.js
-│   │   ├── components/        # Reusable components
-│   │   │   └── Navbar.jsx
-│   │   ├── pages/             # Page components
-│   │   │   ├── Home.jsx
-│   │   │   ├── Login.jsx
-│   │   │   └── Register.jsx
-│   │   ├── App.jsx            # Main app component
-│   │   └── index.css          # Tailwind imports
-│   ├── package.json
-│   └── vite.config.js
-│
-├── .env.example               # Environment template
-├── .gitignore
-└── README.md
-```
 
 ## 🚀 Getting Started
 
@@ -78,7 +38,7 @@ library-management-app/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd library-management-app
+   cd miniMedia
    ```
 
 2. **Create and activate virtual environment**
@@ -108,7 +68,6 @@ library-management-app/
    ```
 
 6. **Initialize the database**
-   - Uncomment lines 47-48 in `app.py`:
      ```python
      with app.app_context():
          db.create_all()
@@ -138,19 +97,6 @@ library-management-app/
    ```
    Frontend will start at `http://localhost:5173`
 
-## 📡 API Endpoints
-
-### Books
-- `GET /books/` - Get all books
-- `GET /books/<id>` - Get single book
-- `POST /books/add` - Add new book
-- `POST /books/update/<id>` - Update book
-- `POST /books/delete/<id>` - Delete book
-
-### Users
-- `POST /register/` - Register new user
-- `POST /login/` - User login
-
 ## 🎨 Tech Stack
 
 ### Backend
@@ -178,7 +124,7 @@ DB_USER=postgres
 DB_PASSWORD=your_password_here
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=lms
+DB_NAME=mini-media
 
 # Flask Configuration
 FLASK_ENV=development
@@ -250,29 +196,9 @@ npm run build
 - ✅ Error handling
 - ✅ Clean code principles
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## 📄 License
 
 This project is licensed under the MIT License.
 
-## 👨‍💻 Author
-
-**Anwar Andargie**
-
-## 🙏 Acknowledgments
-
-- Flask documentation
-- React documentation
-- Tailwind CSS
-- PostgreSQL community
-
 ---
-
-**Happy Coding! 🚀**
